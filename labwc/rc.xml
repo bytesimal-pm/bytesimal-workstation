@@ -35,4 +35,18 @@
     </keybind>
   </keyboard>
 
+  <windowRules>
+    <!-- pavucontrol (opened from the bar's volume widget) behaves as a
+         popup: no titlebar, hidden from the taskbar and Alt-Tab, sized
+         for the mono font and pinned to the top-right under the bar. -->
+    <windowRule identifier="org.pulseaudio.pavucontrol" serverDecoration="no">
+      <skipTaskbar>yes</skipTaskbar>
+      <skipWindowSwitcher>yes</skipWindowSwitcher>
+      <action name="ResizeTo" width="820" height="560" />
+      <action name="MoveToEdge" direction="right" snapWindows="no" />
+      <action name="MoveToEdge" direction="up" snapWindows="no" />
+      <action name="ToggleAlwaysOnTop" />
+    </windowRule>
+  </windowRules>
+
 </labwc_config>

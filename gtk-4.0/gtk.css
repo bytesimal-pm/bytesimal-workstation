@@ -1,0 +1,303 @@
+/* Black/white glass for GTK4 apps (pavucontrol). Colors are CSS rgba()
+ * here; see CLAUDE.md for the QML / labwc spellings of the same values. */
+
+* {
+    font-family: "CommitMono Nerd Font Mono";
+    /* mono is wide; 12px keeps pavucontrol's rows inside the window
+     * size set by the labwc rule */
+    font-size: 12px;
+    outline: none;
+    border-radius: 0;
+}
+
+window,
+.background,
+popover > contents,
+popover > arrow {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+popover > contents {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    padding: 0;
+}
+
+label,
+image {
+    color: #ffffff;
+}
+
+label:disabled,
+label.dim-label {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+separator {
+    background-color: rgba(255, 255, 255, 0.15);
+    min-width: 1px;
+    min-height: 1px;
+}
+
+/* tabs: dim text, white underline on the active one */
+notebook > header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0;
+}
+
+notebook > header > tabs > tab {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    border: none;
+    box-shadow: none;
+    padding: 6px 14px;
+    min-height: 0;
+}
+
+notebook > header > tabs > tab:hover {
+    color: #ffffff;
+}
+
+notebook > header > tabs > tab:checked {
+    color: #ffffff;
+    box-shadow: inset 0 -2px #ffffff;
+}
+
+notebook > stack {
+    background-color: transparent;
+}
+
+/* buttons, dropdowns and combos: bordered glass, inverted when active */
+button,
+dropdown > button,
+combobox > box > button,
+menubutton > button {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    text-shadow: none;
+    padding: 3px 8px;
+    min-height: 0;
+    transition: none;
+}
+
+button:hover,
+dropdown > button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+button:checked,
+button:active {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+button:checked image,
+button:checked label,
+button:active image,
+button:active label {
+    color: #000000;
+}
+
+button:disabled,
+button:disabled image,
+button:disabled label {
+    color: rgba(255, 255, 255, 0.3);
+    background-color: transparent;
+}
+
+/* dropdown / combo popup lists */
+listview,
+list,
+popover listview > row {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+listview > row:hover,
+list > row:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+listview > row:selected,
+list > row:selected {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+listview > row:selected label,
+list > row:selected label {
+    color: #000000;
+}
+
+/* volume sliders: thin white line, square knob */
+scale {
+    padding: 8px 0;
+}
+
+scale > trough {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    box-shadow: none;
+    min-height: 2px;
+    /* mark labels ("Silence", "100%") are centred on the trough ends;
+     * inset it so they aren't clipped by the window edge */
+    margin: 0 28px;
+}
+
+scale > trough > highlight {
+    background-color: #ffffff;
+    border: none;
+    min-height: 2px;
+    /* Adwaita gives this -1px margins, which with a 2px trough makes
+     * GTK warn about a negative min width */
+    margin: 0;
+}
+
+scale > trough > slider {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: none;
+    min-width: 10px;
+    min-height: 10px;
+    margin: -4px;
+}
+
+scale > trough > slider:hover,
+scale > trough > slider:active {
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px #000000, 0 0 0 2px #ffffff;
+}
+
+scale > marks,
+scale > value {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+scale > marks > mark > indicator {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* peak meters: pavucontrol draws them with a GtkProgressBar */
+progressbar > trough {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    box-shadow: none;
+    min-height: 2px;
+}
+
+progressbar > trough > progress {
+    background-color: #ffffff;
+    border: none;
+    min-height: 2px;
+    margin: 0; /* same negative-margin warning as scale highlight */
+}
+
+levelbar > trough {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-height: 2px;
+}
+
+levelbar > trough > block {
+    background-color: transparent;
+    border: none;
+    min-height: 2px;
+}
+
+levelbar > trough > block.filled,
+levelbar > trough > block.low,
+levelbar > trough > block.high,
+levelbar > trough > block.full {
+    background-color: #ffffff;
+}
+
+/* text fields, checks, switches */
+entry {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+}
+
+entry:focus-within {
+    border-color: #ffffff;
+}
+
+check,
+radio {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+    color: #000000;
+    -gtk-icon-source: none;
+}
+
+check:checked,
+radio:checked {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+switch {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+switch:checked {
+    background-color: #ffffff;
+}
+
+switch > slider {
+    background-color: #ffffff;
+    border: none;
+    box-shadow: none;
+}
+
+switch:checked > slider {
+    background-color: #000000;
+}
+
+scrollbar {
+    background-color: transparent;
+}
+
+scrollbar > range > trough {
+    background-color: transparent;
+    border: none;
+}
+
+scrollbar > range > trough > slider {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    min-width: 4px;
+    min-height: 4px;
+}
+
+scrollbar > range > trough > slider:hover {
+    background-color: #ffffff;
+}
+
+/* fallback client-side titlebar if a window ends up without labwc decorations */
+headerbar,
+.titlebar {
+    background-color: #000000;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: none;
+    min-height: 0;
+}
+
+tooltip,
+tooltip > * {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
