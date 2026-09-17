@@ -1,0 +1,5 @@
+# Read by labwc at session start and reloaded by `labwc -r`.
+# Keyboard layouts: US + Thai, toggled with Super+Space.
+# Layout names: /usr/share/X11/xkb/rules/evdev.lst; toggle options: `grep grp: evdev.lst`
+XKB_DEFAULT_LAYOUT=us,th
+XKB_DEFAULT_OPTIONS=grp:win_space_toggle

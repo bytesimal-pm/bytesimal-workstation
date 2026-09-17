@@ -1,0 +1,8 @@
+# Bar + wallpaper (~/.config/quickshell/shell.qml)
+qs >/dev/null 2>&1 &
+
+# Clipboard history daemon. Split into text/image watchers per
+# cliphist's own recommendation, since a single `wl-paste --watch`
+# only tracks one mime class at a time.
+wl-paste --type text --watch cliphist store &
+wl-paste --type image --watch cliphist store &

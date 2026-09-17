@@ -1,0 +1,38 @@
+<labwc_config>
+
+  <theme>
+    <cornerRadius>0</cornerRadius>
+    <font>
+      <name>CommitMono Nerd Font Mono</name>
+      <size>10</size>
+    </font>
+  </theme>
+
+  <!-- Alt-Tab: grid of live window thumbnails (labwc >= 0.9), with the
+       selected window raised/previewed on the desktop as you cycle. -->
+  <windowSwitcher preview="yes" outlines="yes" order="focus">
+    <osd show="yes" style="thumbnail" output="focused" thumbnailLabelFormat="%T" />
+  </windowSwitcher>
+
+  <keyboard>
+    <default />
+    <!-- Toggle wofi app launcher: fires on release so it doesn't
+         interfere with other W-<key> combinations. pkill closes an
+         already-open wofi instead of stacking a second one. -->
+    <keybind key="Super_L" onRelease="yes">
+      <action name="Execute" command="sh -c &quot;pkill -x wofi || wofi --show drun&quot;" />
+    </keybind>
+    <!-- Clipboard history via cliphist, picked through wofi -->
+    <keybind key="W-v">
+      <action name="Execute" command="sh -c &quot;cliphist list | wofi --dmenu | cliphist decode | wl-copy&quot;" />
+    </keybind>
+    <!-- Screenshot (full screen) straight to clipboard -->
+    <keybind key="Print">
+      <action name="Execute" command="sh -c &quot;grim - | wl-copy&quot;" />
+    </keybind>
+    <keybind key="C-A-t">
+      <action name="Execute" command="kitty" />
+    </keybind>
+  </keyboard>
+
+</labwc_config>

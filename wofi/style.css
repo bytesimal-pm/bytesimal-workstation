@@ -1,0 +1,44 @@
+window {
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    font-family: "CommitMono Nerd Font Mono";
+    font-size: 13px;
+}
+
+#outer-box {
+    background-color: transparent;
+    margin: 0px;
+    padding: 8px;
+}
+
+#input {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+}
+
+#inner-box,
+#scroll {
+    background-color: transparent;
+}
+
+#entry {
+    padding: 6px 10px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#entry:selected {
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#entry:selected #text {
+    color: #ffffff;
+}
+
+#text {
+    color: inherit;
+}

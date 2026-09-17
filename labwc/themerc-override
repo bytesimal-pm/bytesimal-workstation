@@ -1,0 +1,35 @@
+# Black/white glass: translucent black fills, white text and a faint
+# white hairline border for the "glass edge" read (no real blur, see
+# quickshell/shell.qml comment for why).
+
+border.width: 1
+
+window.active.title.bg: Solid
+window.active.title.bg.color: #000000e6
+window.active.label.text.color: #ffffff
+window.active.border.color: #ffffff26
+window.active.button.unpressed.image.color: #ffffff
+
+window.inactive.title.bg: Solid
+window.inactive.title.bg.color: #000000b3
+window.inactive.label.text.color: #ffffff80
+window.inactive.border.color: #ffffff14
+window.inactive.button.unpressed.image.color: #ffffff80
+
+# Alt-Tab OSD (thumbnail grid): same glass panel, white hairline border,
+# selected item gets a solid white frame with a faint white fill.
+osd.bg.color: #000000e6
+osd.border.color: #ffffff26
+osd.border.width: 1
+osd.label.text.color: #ffffff
+osd.window-switcher.style-thumbnail.width.max: 80%
+osd.window-switcher.style-thumbnail.padding: 8
+osd.window-switcher.style-thumbnail.item.width: 320
+osd.window-switcher.style-thumbnail.item.height: 220
+osd.window-switcher.style-thumbnail.item.padding: 6
+osd.window-switcher.style-thumbnail.item.active.border.width: 1
+osd.window-switcher.style-thumbnail.item.active.border.color: #ffffff
+osd.window-switcher.style-thumbnail.item.active.bg.color: #ffffff26
+osd.window-switcher.style-thumbnail.item.icon.size: 48
+osd.window-switcher.preview.border.width: 1
+osd.window-switcher.preview.border.color: #ffffff
