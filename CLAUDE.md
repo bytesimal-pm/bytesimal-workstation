@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A personal Wayland desktop config for Arch Linux: **labwc** (compositor) + **quickshell** (bar and wallpaper, QML) + **wofi** (launcher), with a black/white translucent "glass" theme. There is no build step and no test suite — everything is config that gets symlinked into place.
+A personal Wayland desktop config for Arch Linux: **labwc** (compositor) + **quickshell** (bar and wallpaper, QML) + **wofi** (launcher) + **kitty** (terminal) + **zsh** + **fzf** (shell) + **fastfetch** (terminal system-info banner), with a black/white translucent "glass" theme. There is no build step and no test suite — everything is config that gets symlinked into place.
 
 ## Install / deploy model
 
@@ -20,7 +20,12 @@ Because the folders are symlinked wholesale, **editing a file in this repo is im
 | `labwc/autostart` | **Not** reloaded by `labwc -r` — only runs at session start. Start the process manually to test. |
 | `quickshell/shell.qml` | Restart the bar: `pkill -x qs; cd quickshell && setsid qs -p shell.qml >/dev/null 2>&1 &` |
 | `wofi/*` | Nothing — wofi reads config/style on each launch |
+| `zsh/zshrc` | `source ~/.zshrc` in an open shell, or open a new one. Syntax-check first: `zsh -n zsh/zshrc` |
+| `kitty/kitty.conf` | `pkill -USR1 -x kitty` (or Ctrl+Shift+F5 in the window) reloads running instances |
+| `gtk-4.0/gtk.css` | Restart the app (pavucontrol) — GTK reads the CSS at startup |
+| `fastfetch/*` | Nothing — read on each run. Test from the repo without the symlink: `fastfetch --config $PWD/fastfetch/config.jsonc` (the ascii logo path is `~/.config/...`, so it needs the link or a temporary absolute path). Check nothing but greyscale is emitted: `fastfetch --pipe false \| grep -o $'\e\[[0-9;]*m' \| sort -u` |
 | `fontconfig/`, `fonts/` | `fc-cache -f`; verify with `fc-match` (see below) |
+| `xdg-desktop-portal-wlr/config` | `systemctl --user restart xdg-desktop-portal-wlr`; failures show in `journalctl --user -u xdg-desktop-portal-wlr -e` |
 
 Check the live bar's log for QML warnings: `qs log -t 40` (add `-i <id>` from `qs list --all` if it can't find the instance). Smoke-test a QML change without disturbing the live bar: `cd quickshell && timeout 4 qs -p shell.qml` — exit code 143 (killed by timeout) with no output means it loaded cleanly.
 

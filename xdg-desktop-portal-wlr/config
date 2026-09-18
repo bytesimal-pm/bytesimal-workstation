@@ -1,0 +1,9 @@
+# xdg-desktop-portal-wlr: screen sharing backend for labwc.
+# labwc ships /usr/share/xdg-desktop-portal/labwc-portals.conf, which
+# already routes ScreenCast to this backend; this file only picks the
+# output chooser. The built-in default falls through to `wmenu`, which
+# is not installed, so the session got no output and streamed black.
+# wofi in dmenu mode lists the monitors using the repo's wofi theme.
+[screencast]
+chooser_type=dmenu
+chooser_cmd=wofi -d --prompt='Share monitor:'

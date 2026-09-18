@@ -19,11 +19,15 @@ PACKAGES=(
     labwc                    # compositor
     quickshell               # bar + wallpaper (quickshell/)
     kitty                    # terminal (Ctrl+Alt+T)
+    zsh zsh-autosuggestions zsh-syntax-highlighting zsh-completions  # shell (zsh/)
+    fzf                      # fuzzy finder (Ctrl+R / Ctrl+T / Alt+C in zsh)
+    fastfetch                # system info banner (fastfetch/)
     wofi                     # launcher (Super) + clipboard picker
     cliphist wl-clipboard    # clipboard history (Super+V)
     grim                     # screenshot to clipboard (Print)
     adwaita-icon-theme       # taskbar / tray icons
     gsettings-desktop-schemas xdg-desktop-portal xdg-desktop-portal-gtk  # dark mode for GTK/portal apps
+    xdg-desktop-portal-wlr   # screen sharing (labwc ships labwc-portals.conf selecting it)
     noto-fonts noto-fonts-cjk  # Cyrillic / CJK coverage
     pipewire pipewire-pulse pipewire-alsa wireplumber  # audio
     pavucontrol              # volume mixer (sits in the tray)
@@ -37,6 +41,7 @@ AUR_PACKAGES=(
     claude-code              # Claude Code CLI
     proton-mail              # Proton Mail desktop app (tray)
     vesktop                  # Discord client
+    fzf-tab-git              # Tab completion through fzf (zsh/)
 )
 
 install_packages() {
@@ -99,11 +104,27 @@ enable_audio() {
         || echo "could not enable pipewire user services (no user session bus?)" >&2
 }
 
+# Make zsh the login shell. Takes effect on the next login; kitty windows
+# opened in the current session keep inheriting $SHELL from the tty login.
+set_login_shell() {
+    command -v zsh >/dev/null 2>&1 || return
+    local zsh_path current
+    zsh_path="$(command -v zsh)"
+    current="$(getent passwd "$USER" | cut -d: -f7)"
+    if [ "$current" = "$zsh_path" ]; then
+        echo "login shell already zsh"
+        return
+    fi
+    echo "changing login shell to $zsh_path (chsh will ask for your password)"
+    chsh -s "$zsh_path"
+}
+
 if [ "${1:-}" != "--no-pkgs" ]; then
     install_packages
     install_yay
     install_aur_packages
     enable_audio
+    set_login_shell
 fi
 
 link() {
@@ -131,6 +152,10 @@ link quickshell "$CONFIG_HOME/quickshell"
 link gtk-3.0 "$CONFIG_HOME/gtk-3.0"
 link gtk-4.0 "$CONFIG_HOME/gtk-4.0"
 link wofi "$CONFIG_HOME/wofi"
+link kitty "$CONFIG_HOME/kitty"
+link zsh/zshrc "$HOME/.zshrc"
+link fastfetch "$CONFIG_HOME/fastfetch"
+link xdg-desktop-portal-wlr "$CONFIG_HOME/xdg-desktop-portal-wlr"
 link fontconfig/conf.d/49-th-sarabun.conf "$CONFIG_HOME/fontconfig/conf.d/49-th-sarabun.conf"
 link fonts/CommitMonoNerdFontMono "$HOME/.local/share/fonts/CommitMonoNerdFontMono"
 link fonts/THSarabunNew "$HOME/.local/share/fonts/THSarabunNew"

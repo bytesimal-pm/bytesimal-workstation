@@ -1,0 +1,121 @@
+# ~/.zshrc — symlinked from zsh/zshrc by install.sh.
+#
+# Black/white to match the rest of the setup: bold = command, grey (color
+# 8) = secondary info, underline = path. Plugins come from the Arch
+# packages zsh-autosuggestions / zsh-syntax-highlighting / zsh-completions
+# (install.sh); nothing is cloned into $HOME.
+
+# ---------------------------------------------------------------- options
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+setopt SHARE_HISTORY INC_APPEND_HISTORY
+setopt AUTO_CD INTERACTIVE_COMMENTS NO_BEEP
+
+# ------------------------------------------------------------- completion
+fpath=(/usr/share/zsh/site-functions $fpath)   # zsh-completions
+mkdir -p ~/.cache/zsh
+autoload -Uz compinit && compinit -d ~/.cache/zsh/zcompdump
+zmodload zsh/complist
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'   # case-insensitive
+zstyle ':completion:*' list-colors ''                        # no LS_COLORS in menus
+zstyle ':completion:*:descriptions' format '%F{8}%d%f'
+zstyle ':completion:*:warnings' format '%F{8}no matches%f'
+zstyle ':completion:*' group-name ''
+
+# ---------------------------------------------------------------- keymap
+bindkey -e
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search    # Up: history filtered by typed prefix
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[[H' beginning-of-line              # Home
+bindkey '^[[F' end-of-line                    # End
+bindkey '^[[3~' delete-char                   # Delete
+bindkey '^[[1;5C' forward-word                # Ctrl+Right
+bindkey '^[[1;5D' backward-word               # Ctrl+Left
+bindkey '^H' backward-kill-word               # Ctrl+Backspace
+bindkey -M menuselect '^[[Z' reverse-menu-complete   # Shift+Tab in the menu
+
+# ---------------------------------------------------------------- prompt
+#   ~/repo main ❯
+# cwd bold, git branch grey, the arrow shows the last exit code in grey
+# when it was non-zero: ~/repo main [1] ❯
+setopt PROMPT_SUBST
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' %F{8}%b%f'
+zstyle ':vcs_info:git:*' actionformats ' %F{8}%b|%a%f'
+precmd() { vcs_info }
+PROMPT='%B%~%b${vcs_info_msg_0_} %(?..%F{8}[%?]%f )%F{15}❯%f '
+PROMPT2='%F{8}…%f '
+
+# --------------------------------------------------------------- aliases
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias grep='grep --color=auto'
+alias ip='ip -color=auto'
+
+# ------------------------------------------------------------------ fzf
+# Ctrl+R history, Ctrl+T insert file path, Alt+C cd into directory.
+# --color=bw is fzf's built-in monochrome scheme; the rest sets the
+# same glyphs as the prompt.
+if (( $+commands[fzf] )); then
+    export FZF_DEFAULT_OPTS='--color=bw --height=40% --layout=reverse --border=sharp --prompt="❯ " --pointer="❯" --marker="+"'
+    source <(fzf --zsh)
+fi
+
+# Tab completion through fzf (AUR fzf-tab-git): type to filter, Enter to
+# pick, instead of zsh's menu. Must come after compinit and before the
+# highlighting plugins.
+if [[ -r /usr/share/zsh/plugins/fzf-tab-git/fzf-tab.zsh ]]; then
+    source /usr/share/zsh/plugins/fzf-tab-git/fzf-tab.zsh
+    zstyle ':fzf-tab:*' fzf-flags --color=bw --prompt='❯ ' --pointer='❯' --marker='+' --border=sharp
+    zstyle ':fzf-tab:*' prefix ''                     # no "·" in front of entries
+    zstyle ':fzf-tab:*' switch-group '<' '>'          # jump between completion groups
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=auto $realpath'
+    zstyle ':fzf-tab:*' fzf-pad 4
+fi
+
+# --------------------------------------------------------------- plugins
+# autosuggestions: grey ghost text, Right/End accepts
+if [[ -r /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+fi
+
+# syntax highlighting: valid commands bold, unknown ones grey, paths
+# underlined, everything else left alone. Must be sourced last.
+if [[ -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    typeset -A ZSH_HIGHLIGHT_STYLES
+    ZSH_HIGHLIGHT_STYLES[default]='none'
+    ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=8'
+    ZSH_HIGHLIGHT_STYLES[command]='bold'
+    ZSH_HIGHLIGHT_STYLES[builtin]='bold'
+    ZSH_HIGHLIGHT_STYLES[alias]='bold'
+    ZSH_HIGHLIGHT_STYLES[function]='bold'
+    ZSH_HIGHLIGHT_STYLES[precommand]='bold'
+    ZSH_HIGHLIGHT_STYLES[reserved-word]='bold'
+    ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=8'
+    ZSH_HIGHLIGHT_STYLES[redirection]='fg=8'
+    ZSH_HIGHLIGHT_STYLES[comment]='fg=8'
+    ZSH_HIGHLIGHT_STYLES[path]='underline'
+    ZSH_HIGHLIGHT_STYLES[path_prefix]='underline'
+    ZSH_HIGHLIGHT_STYLES[globbing]='underline'
+    ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='none'
+    ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='none'
+    ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='none'
+    ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='none'
+    ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='none'
+    ZSH_HIGHLIGHT_STYLES[back-quoted-argument]='none'
+    ZSH_HIGHLIGHT_STYLES[arg0]='bold'
+fi
+
+# ------------------------------------------------------------- greeting
+# system-info banner (fastfetch/) on every interactive terminal
+[[ -o interactive && -t 1 ]] && (( $+commands[fastfetch] )) && fastfetch

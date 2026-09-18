@@ -10,11 +10,13 @@
     border-radius: 0;
 }
 
+/* translucent like wofi; GTK4 on Wayland always draws to an alpha
+ * surface, so the window itself is glass without any extra setup */
 window,
 .background,
 popover > contents,
 popover > arrow {
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.9);
     color: #ffffff;
 }
 
@@ -288,7 +290,7 @@ scrollbar > range > trough > slider:hover {
 /* fallback client-side titlebar if a window ends up without labwc decorations */
 headerbar,
 .titlebar {
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.9);
     color: #ffffff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: none;
@@ -297,7 +299,7 @@ headerbar,
 
 tooltip,
 tooltip > * {
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.9);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
