@@ -6,3 +6,10 @@ qs >/dev/null 2>&1 &
 # only tracks one mime class at a time.
 wl-paste --type text --watch cliphist store &
 wl-paste --type image --watch cliphist store &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+# Portals are per-login, not per-compositor. After a logout/login the
+# wlr backend has lost its Wayland socket and died, but xdg-desktop-portal
+# lingers and reports no ScreenCast backend, so OBS/browsers show no
+# screen-capture source. Restart both so they bind to this session.
+systemctl --user restart xdg-desktop-portal-wlr xdg-desktop-portal &

@@ -1,6 +1,7 @@
 <labwc_config>
 
   <theme>
+    <icon>Papirus-Dark</icon>
     <cornerRadius>0</cornerRadius>
     <font>
       <name>CommitMono Nerd Font Mono</name>
@@ -14,6 +15,17 @@
     <osd show="yes" style="thumbnail" output="focused" thumbnailLabelFormat="%T" />
   </windowSwitcher>
 
+  <!-- Mouse: no acceleration (flat = constant velocity, 1:1 with the
+       sensor), speed is a multiplier from -1.0 (slowest) to 1.0 (fastest),
+       0.0 = unscaled. Category non-touch = traditional mice only, so a
+       touchpad keeps libinput's defaults. Applied by `labwc -r`. -->
+  <libinput>
+    <device category="non-touch">
+      <accelProfile>flat</accelProfile>
+      <pointerSpeed>1.0</pointerSpeed>
+    </device>
+  </libinput>
+
   <keyboard>
     <default />
     <!-- Toggle wofi app launcher: fires on release so it doesn't
@@ -26,12 +38,28 @@
     <keybind key="W-v">
       <action name="Execute" command="sh -c &quot;cliphist list | wofi --dmenu | cliphist decode | wl-copy&quot;" />
     </keybind>
-    <!-- Screenshot (full screen) straight to clipboard -->
+    <!-- Screenshot to clipboard. Print: drag a region with slurp (Escape
+         cancels and nothing is copied; the dimmed overlay / white frame
+         match the glass theme). Shift+Print: whole screen.
+         The command is a <command> child, not a command="" attribute:
+         labwc re-parses attribute values for XML entities, so any '&'
+         in them (e.g. '&&') gets mangled. -->
     <keybind key="Print">
-      <action name="Execute" command="sh -c &quot;grim - | wl-copy&quot;" />
+      <action name="Execute">
+        <command>sh -c 'g=$(slurp -d -b 00000080 -c ffffffff -s 00000000 -w 1 -F "CommitMono Nerd Font Mono") &amp;&amp; grim -g "$g" - | wl-copy'</command>
+      </action>
+    </keybind>
+    <keybind key="S-Print">
+      <action name="Execute">
+        <command>sh -c 'grim - | wl-copy'</command>
+      </action>
     </keybind>
     <keybind key="C-A-t">
       <action name="Execute" command="kitty" />
+    </keybind>
+    <!-- Fullscreen the focused window (hides the bar and titlebar) -->
+    <keybind key="F11">
+      <action name="ToggleFullscreen" />
     </keybind>
   </keyboard>
 

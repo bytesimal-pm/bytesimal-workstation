@@ -3,3 +3,7 @@
 # Layout names: /usr/share/X11/xkb/rules/evdev.lst; toggle options: `grep grp: evdev.lst`
 XKB_DEFAULT_LAYOUT=us,th
 XKB_DEFAULT_OPTIONS=grp:win_space_toggle
+# Icon theme for the quickshell bar (Qt has no platform theme under labwc,
+# so QIcon would otherwise fall back to hicolor). GTK apps get the same
+# theme from gtk-*/settings.ini and gsettings (install.sh).
+QS_ICON_THEME=Papirus-Dark

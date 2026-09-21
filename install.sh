@@ -24,8 +24,9 @@ PACKAGES=(
     fastfetch                # system info banner (fastfetch/)
     wofi                     # launcher (Super) + clipboard picker
     cliphist wl-clipboard    # clipboard history (Super+V)
-    grim                     # screenshot to clipboard (Print)
-    adwaita-icon-theme       # taskbar / tray icons
+    grim slurp               # screenshot to clipboard (Print = region, Shift+Print = full)
+    papirus-icon-theme       # icon theme (Papirus-Dark: bar, labwc, GTK) — see gtk-*/settings.ini, labwc/environment
+    adwaita-icon-theme       # fallback for icons Papirus lacks
     gsettings-desktop-schemas xdg-desktop-portal xdg-desktop-portal-gtk  # dark mode for GTK/portal apps
     xdg-desktop-portal-wlr   # screen sharing (labwc ships labwc-portals.conf selecting it)
     noto-fonts noto-fonts-cjk  # Cyrillic / CJK coverage
@@ -167,7 +168,8 @@ fi
 
 if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-    echo "set GTK color-scheme to prefer-dark"
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+    echo "set GTK color-scheme to prefer-dark, icon theme to Papirus-Dark"
 fi
 
 if command -v labwc >/dev/null 2>&1 && [ -n "${WAYLAND_DISPLAY:-}" ]; then
